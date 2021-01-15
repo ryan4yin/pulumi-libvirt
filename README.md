@@ -1,86 +1,81 @@
-# Terraform Bridge Provider Boilerplate
+Pulumi Provider for Libvirt
+======
 
-This repository contains boilerplate code for building a new Pulumi provider which wraps an existing
-Terraform provider, if the existing provider uses _Go Modules_.
+![master branch status](https://github.com/ryan4yin/pulumi-libvirt/workflows/master/badge.svg)
+[![PYPI Version](https://img.shields.io/pypi/v/pulumi_libvirt.svg)](https://pypi.org/project/pulumi_libvirt/)
 
-Modify this README to describe:
-
-- The type of resources the provider manages
-- Add a build status image from Travis at the top of the README
-- Update package names in the information below
-- Add any important documentation of concepts (e.g. the "serverless" components in the AWS provider).
-
-## Creating a Pulumi Terraform Bridge Provider
-
-First, clone this repo with the name of the desired provider in place of `xyz`:
-
-```
-git clone https://github.com/pulumi/pulumi-tf-provider-boilerplate pulumi-xyz
-```
-
-Second, replace references to `xyz` with the name of your provider:
-
-```
-make prepare NAME=foo REPOSITORY=github.com/pulumi/pulumi-foo
-```
-
-Next, list the configuration points for the provider in the area of the README.
+A Pulumi provider that lets you provision servers on a libvirt host via pulumi.
 
 
-> Note: If the name of the desired Pulumi provider differs from the name of the Terraform provider, you will need to carefully distinguish between the references - see https://github.com/pulumi/pulumi-azure for an example.
+Based on [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt)
 
-### Add dependencies
+## Installation
+
+1. Resources plugin for Linux are available as tarballs in the [release](https://github.com/ryan4yin/pulumi-libvirt/releases) page.
+1. Follow the installation instructions in release page to install the resource plugin and the python sdk.
+1. for other languages, ​​please install sdk from source in the `sdk` folder.
+
+## Build and Install the provider From Source
 
 In order to properly build the sdks, the following tools are expected:
 - `pulumictl` (See the project's README for installation instructions: https://github.com/pulumi/pulumictl)
 
-In the root of the repository, run:
+to build all the sdks, you need install and set up all the 4 language sdks first: go/dotnet/python/nodejs.
 
-- `GO111MODULE=on go get github.com/pulumi/pulumi-terraform@master`
-- `(cd provider && go get github.com/terraform-providers/terraform-provider-foo)`  (where `foo` is the name of the provider - note the parenthesis to run this in a subshell)
-- `(cd provider && go mod download)`
+then use the following command to build the resource plugin and all the sdks:
 
-### Build the provider:
+```shell
+make build_sdks
+```
 
-- Edit `provider/resources.go` to map each resource, and specify provider information
-- `make build_sdks`
+### Install Resource Plugin 
 
-## Installing
+first, build and install resource plugin:
 
-This package is available in many languages in the standard packaging formats.
+```shell
+make install_resource_plugin
+```
+
+**Note**: Installing package directly from the package registry like pypi/npm/nuget is not supported yet, you need to install package from source via `make`.
+
 
 ### Node.js (Java/TypeScript)
 
-To use from JavaScript or TypeScript in Node.js, install using either `npm`:
-
-    $ npm install @pulumi/xyx
-
-or `yarn`:
-
-    $ yarn add @pulumi/xyx
+```shell
+make install_nodejs_sdk
+```
 
 ### Python
 
-To use from Python, install using `pip`:
-
-    $ pip install pulumi_xyx
+```shell
+make install_python_sdk
+```
 
 ### Go
 
 To use from Go, use `go get` to grab the latest version of the library
 
-    $ go get github.com/pulumi/pulumi-xyz/sdk/go/...
+    $ go get github.com/ryan4yin/pulumi-libvirt/sdk/go/...
+
+
+### .NET
+
+To use from .NET, use the following command:
+
+    $ make install_dotnet_sdk
 
 ## Configuration
 
-The following configuration points are available for the `xyz` provider:
+The following configuration points are available for the `libvirt` provider:
 
-- `xyz:apiKey` (environment: `XYZ_API_KEY`) - the API key for `xyz`
-- `xyz:region` (environment: `XYZ_REGION`) - the region in which to deploy resources
+- `libvirt:uri` (environment: `LIBVIRT_DEFAULT_URI`) - The [connection URI](https://libvirt.org/uri.html) used to connect to the libvirt host.
+  - e.g. `qemu:///system`
 
-## Reference
+## Documentation
 
-For detailed reference documentation, please visit [the API docs][1].
+Please visit [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt) for details
 
+## Examples
 
-[1]: https://www.pulumi.com/docs/reference/pkg/x/
+>to be done.
+

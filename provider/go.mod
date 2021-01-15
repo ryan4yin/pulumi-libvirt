@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-xyz/provider
+module github.com/ryan4yin/pulumi-libvirt/provider
 
 go 1.15
 
