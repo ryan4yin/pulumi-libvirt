@@ -103,7 +103,6 @@ func Provider() tfbridge.ProviderInfo {
 			// Add any required configuration here, or remove the example below if
 			// no additional points are required.
 			"uri": {
-				Type: makeType("uri", "URI"),
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"LIBVIRT_DEFAULT_URI"},
 				},

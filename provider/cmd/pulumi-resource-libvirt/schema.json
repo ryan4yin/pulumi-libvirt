@@ -16,7 +16,6 @@
         "variables": {
             "uri": {
                 "type": "string",
-                "$ref": "#/types/libvirt:uri:URI",
                 "description": "libvirt connection URI for operations. See https://libvirt.org/uri.html\n",
                 "defaultInfo": {
                     "environment": [
@@ -634,7 +633,6 @@
         "inputProperties": {
             "uri": {
                 "type": "string",
-                "$ref": "#/types/libvirt:uri:URI",
                 "description": "libvirt connection URI for operations. See https://libvirt.org/uri.html\n",
                 "defaultInfo": {
                     "environment": [
