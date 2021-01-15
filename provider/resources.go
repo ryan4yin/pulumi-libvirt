@@ -99,35 +99,34 @@ func Provider() tfbridge.ProviderInfo {
 		License:     "Apache-2.0",
 		Homepage:    "https://github.com/ryan4yin/pulumi-libvirt",
 		Repository:  "https://github.com/ryan4yin/pulumi-libvirt",
-		Config:      map[string]*tfbridge.SchemaInfo{
+		Config: map[string]*tfbridge.SchemaInfo{
 			// Add any required configuration here, or remove the example below if
 			// no additional points are required.
-			// "region": {
-			// 	Type: makeType("region", "Region"),
-			// 	Default: &tfbridge.DefaultInfo{
-			// 		EnvVars: []string{"AWS_REGION", "AWS_DEFAULT_REGION"},
-			// 	},
-			// },
+			"uri": {
+				Type: makeType("uri", "URI"),
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"LIBVIRT_DEFAULT_URI"},
+				},
+			},
 		},
 		PreConfigureCallback: preConfigureCallback,
-		Resources:            map[string]*tfbridge.ResourceInfo{
-			// Map each resource in the Terraform provider to a Pulumi type. Two examples
-			// are below - the single line form is the common case. The multi-line form is
-			// needed only if you wish to override types or other default options.
-			//
-			// "aws_iam_role": {Tok: makeResource(mainMod, "IamRole")}
-			//
-			// "aws_acm_certificate": {
-			// 	Tok: makeResource(mainMod, "Certificate"),
-			// 	Fields: map[string]*tfbridge.SchemaInfo{
-			// 		"tags": {Type: makeType(mainPkg, "Tags")},
-			// 	},
-			// },
+		Resources: map[string]*tfbridge.ResourceInfo{
+			// Map each resource in the Terraform provider to a Pulumi type.
+			// the resourceMap of terraform provider: https://github.com/dmacvicar/terraform-provider-libvirt/blob/master/libvirt/provider.go
+
+			"libvirt_domain":         {Tok: makeResource(mainMod, "Domain")},
+			"libvirt_volume":         {Tok: makeResource(mainMod, "Volume")},
+			"libvirt_network":        {Tok: makeResource(mainMod, "Network")},
+			"libvirt_pool":           {Tok: makeResource(mainMod, "Pool")},
+			"libvirt_cloudinit_disk": {Tok: makeResource(mainMod, "CloudInitDisk")},
+			"libvirt_ignition":       {Tok: makeResource(mainMod, "Ignition")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
-			// Map each resource in the Terraform provider to a Pulumi function. An example
-			// is below.
-			// "aws_ami": {Tok: makeDataSource(mainMod, "getAmi")},
+			// Map each resource in the Terraform provider to a Pulumi function.
+			// the datasourceMap of terraform provider: https://github.com/dmacvicar/terraform-provider-libvirt/blob/master/libvirt/provider.go
+			"libvirt_network_dns_host_template":        {Tok: makeDataSource(mainMod, "NetworkDNSHostTemplate")},
+			"libvirt_network_dns_srv_template":         {Tok: makeDataSource(mainMod, "NetworkDNSSRVTemplate")},
+			"libvirt_network_dnsmasq_options_template": {Tok: makeDataSource(mainMod, "NetworkDnsmasqOptionsTemplate")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			// List any npm dependencies and their versions
