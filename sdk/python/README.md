@@ -20,6 +20,16 @@ Based on [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/ter
 In order to properly build the sdks, the following tools are expected:
 - `pulumictl` (See the project's README for installation instructions: https://github.com/pulumi/pulumictl)
 
+other complie requirements:
+
+1. [libvirt](https://libvirt.org/downloads.html) 1.2.14 or newer development headers
+1. `cgo` is required by the [libvirt-go](https://github.com/libvirt/libvirt-go) package. `export CGO_ENABLED="1"`
+
+runtime requirements:
+
+1. libvirt daemon 1.2.14 or newer
+1. `mkisofs` is required to use the [CloudInit](https://github.com/dmacvicar/terraform-provider-libvirt/blob/master/website/docs/r/cloudinit.html.markdown)
+
 to build all the sdks, you need install and set up all the 4 language sdks first: go/dotnet/python/nodejs.
 
 then use the following command to build the resource plugin and all the sdks:
