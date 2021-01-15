@@ -17,13 +17,13 @@ package libvirt
 import (
 	"unicode"
 
+	"github.com/dmacvicar/terraform-provider-libvirt/libvirt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfbridge"
 	shim "github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfshim"
 	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfshim/sdk-v1"
 	"github.com/pulumi/pulumi/sdk/v2/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v2/go/common/tokens"
-	"github.com/terraform-providers/terraform-provider-libvirt/libvirt"
 )
 
 // all of the token components used below.
