@@ -102,15 +102,22 @@ help::
 clean::
 	rm -rf sdk/{dotnet,nodejs,go,python}
 
+
 install_plugins::
 	[ -x $(shell which pulumi) ] || curl -fsSL https://get.pulumi.com | sh
-	pulumi plugin install resource random 2.2.0
+
+
+install_resource_plugin::
+	cd $(WORKING_DIR)/bin && tar -czf ${PROVIDER}-${VERSION}.tgz ${PROVIDER}
+	pulumi plugin install resource proxmox ${VERSION} -f $(WORKING_DIR)/bin/${PROVIDER}-${VERSION}.tgz
+
 
 install_dotnet_sdk::
 	mkdir -p $(WORKING_DIR)/nuget
 	find . -name '*.nupkg' -print -exec cp -p {} ${WORKING_DIR}/nuget \;
 
 install_python_sdk::
+	pip install `find sdk/python/bin/dist -name '*.tar.gz'`
 
 install_go_sdk::
 

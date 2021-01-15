@@ -124,9 +124,9 @@ func Provider() tfbridge.ProviderInfo {
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			// Map each resource in the Terraform provider to a Pulumi function.
 			// the datasourceMap of terraform provider: https://github.com/dmacvicar/terraform-provider-libvirt/blob/master/libvirt/provider.go
-			"libvirt_network_dns_host_template":        {Tok: makeDataSource(mainMod, "NetworkDNSHostTemplate")},
-			"libvirt_network_dns_srv_template":         {Tok: makeDataSource(mainMod, "NetworkDNSSRVTemplate")},
-			"libvirt_network_dnsmasq_options_template": {Tok: makeDataSource(mainMod, "NetworkDnsmasqOptionsTemplate")},
+			"libvirt_network_dns_host_template":        {Tok: makeDataSource(mainMod, "getNetworkDNSHostTemplate")},
+			"libvirt_network_dns_srv_template":         {Tok: makeDataSource(mainMod, "getNetworkDNSSRVTemplate")},
+			"libvirt_network_dnsmasq_options_template": {Tok: makeDataSource(mainMod, "getNetworkDnsmasqOptionsTemplate")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			// List any npm dependencies and their versions
