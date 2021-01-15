@@ -87,5 +87,128 @@ Please visit [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar
 
 ## Examples
 
->to be done.
+set libvirt_url first:
+
+```shell
+export LIBVIRT_DEFAULT_URI=qemu:///system
+```
+
+Create VirtualMachine using Python SDK(writing in other languages ​​is almost the same):
+
+```python
+from pathlib import Path
+
+from pulumi_libvirt import *
+
+private_key = Path("ssh-common").read_text()
+
+os_image = Volume(
+    "opensuse-image",
+    name="opensuse-base-qcow2.qcow2",
+    # uri to the volume file, http/file
+    source="/data/os-images/opensuse15.2-OpenStack.x86_64.qcow2",
+)
+
+disk_pool = Pool(
+    "libvirt-test-pool",
+    name="libvirt-test",
+    type="dir",
+    path="/data/kvm-pool"
+)
+
+volume = Volume(
+    "opensuse-vm-test-disk",
+    name="opensuse-vm-test-disk.qcow2",
+    base_volume_id=os_image.id,
+    pool=disk_pool.name,
+    size=30 * 1024 * 1024 * 1024,  # clone from base volume, and resize to 10GB(in bytes)
+)
+
+cloudinit_disk = CloudInitDisk(
+    "cloudinit-test",
+    name="cloudinit-test.iso",
+    user_data=f"""#cloud-config
+hostname: k8s-master-0
+# let cloudinit ensure that a entry for the fqdn with a distribution dependent ip is present in /etc/hosts
+manage_etc_hosts: localhost
+
+package_upgrade: true
+
+disable_root: false
+
+# set root's password/keys
+user: root
+# set password for console login
+password: xxxxx
+ssh_authorized_keys:
+  - "{private_key}"
+
+chpasswd:
+  # expire password once uesed
+  expire: false
+  
+# allow auth by password(not recommended)
+# ssh_pwauth: true
+    """,
+    network_config="""
+version: 2
+ethernets:
+  eth0:
+    dhcp4: false
+    addresses: 
+    - 192.168.122.160/24
+    gateway4: 192.168.122.1
+    nameservers:
+      addresses: [ 114.114.114.114,8.8.8.8 ]
+    """,
+    pool=disk_pool.name,
+)
+
+
+vm = Domain(
+    "opensuse-vm-test",
+    name="opensuse-vm-test",
+
+    autostart=True,
+    qemu_agent=False,
+    running=False,
+
+    vcpu=2,
+    memory=4096,
+    description="opensuse vm",
+
+    cloudinit=cloudinit_disk.id,
+    disks=[
+        DomainDiskArgs(volume_id=volume.id, scsi=True)
+    ],
+
+    network_interfaces=[
+        DomainNetworkInterfaceArgs(
+            network_name="default",
+        )
+    ],
+
+
+    # The optional filesystem block are used to share a directory of the libvirtd host with the guest.
+    # filesystems=[
+    #     # mount this dir inside guest os: `sudo mount -t 9p -o trans=virtio,version=9p2000.L,r share /data/share`
+    #     DomainFilesystemArgs(source="/data/share", target="share", readonly=True)
+    # ]
+
+    # IMPORTANT: this is a known bug on cloud images, since they expect a console
+    # we need to pass it
+    # https://bugs.launchpad.net/cloud-images/+bug/1573095
+    consoles=[
+        DomainConsoleArgs(
+            type="pty",
+            target_type="virtio",
+            target_port="1",
+        )
+    ],
+
+    # graphics=DomainGraphicsArgs(type="vnc", listen_type="address"),
+    graphics=DomainGraphicsArgs(
+        type="spice", listen_type="address", autoport=True),
+)
+```
 
