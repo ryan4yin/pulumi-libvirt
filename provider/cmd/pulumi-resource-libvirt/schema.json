@@ -1,0 +1,1558 @@
+{
+    "name": "libvirt",
+    "description": "A Pulumi provider that lets you provision servers on a libvirt host via pulumi.",
+    "keywords": [
+        "pulumi",
+        "libvirt"
+    ],
+    "homepage": "https://github.com/ryan4yin/pulumi-libvirt",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`libvirt` Terraform Provider](https://github.com/terraform-providers/terraform-provider-libvirt).",
+    "repository": "https://github.com/ryan4yin/pulumi-libvirt",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "config": {
+        "variables": {
+            "uri": {
+                "type": "string",
+                "$ref": "#/types/libvirt:uri:URI",
+                "description": "libvirt connection URI for operations. See https://libvirt.org/uri.html\n",
+                "defaultInfo": {
+                    "environment": [
+                        "LIBVIRT_DEFAULT_URI"
+                    ]
+                }
+            }
+        },
+        "defaults": [
+            "uri"
+        ]
+    },
+    "types": {
+        "libvirt:index/DomainBootDevice:DomainBootDevice": {
+            "properties": {
+                "devs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/DomainConsole:DomainConsole": {
+            "properties": {
+                "sourceHost": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "sourcePath": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "sourceService": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "targetPort": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "targetType": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "type": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "targetPort",
+                "type"
+            ]
+        },
+        "libvirt:index/DomainCpu:DomainCpu": {
+            "properties": {
+                "mode": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "mode"
+            ]
+        },
+        "libvirt:index/DomainDisk:DomainDisk": {
+            "properties": {
+                "blockDevice": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "file": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "scsi": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "url": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "volumeId": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "wwn": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/DomainFilesystem:DomainFilesystem": {
+            "properties": {
+                "accessmode": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "readonly": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "source": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "target": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "source",
+                "target"
+            ]
+        },
+        "libvirt:index/DomainGraphics:DomainGraphics": {
+            "properties": {
+                "autoport": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "listenAddress": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "listenType": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "type": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/DomainNetworkInterface:DomainNetworkInterface": {
+            "properties": {
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "bridge": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "hostname": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "mac": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "macvtap": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "networkId": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "networkName": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "passthrough": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "vepa": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "waitForLease": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "addresses",
+                        "hostname",
+                        "mac",
+                        "networkId",
+                        "networkName"
+                    ]
+                }
+            }
+        },
+        "libvirt:index/DomainNvram:DomainNvram": {
+            "properties": {
+                "file": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "template": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "file"
+            ]
+        },
+        "libvirt:index/DomainVideo:DomainVideo": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/DomainXml:DomainXml": {
+            "properties": {
+                "xslt": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkDhcp:NetworkDhcp": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkDns:NetworkDns": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "forwarders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/NetworkDnsForwarder:NetworkDnsForwarder"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/NetworkDnsHost:NetworkDnsHost"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "localOnly": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "srvs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/NetworkDnsSrv:NetworkDnsSrv"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkDnsForwarder:NetworkDnsForwarder": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "domain": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkDnsHost:NetworkDnsHost": {
+            "properties": {
+                "hostname": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "ip": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkDnsSrv:NetworkDnsSrv": {
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "port": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "priority": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "protocol": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "service": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "target": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "weight": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/NetworkRoute:NetworkRoute": {
+            "properties": {
+                "cidr": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "gateway": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "cidr",
+                "gateway"
+            ]
+        },
+        "libvirt:index/NetworkXml:NetworkXml": {
+            "properties": {
+                "xslt": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/PoolXml:PoolXml": {
+            "properties": {
+                "xslt": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "libvirt:index/VolumeXml:VolumeXml": {
+            "properties": {
+                "xslt": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        }
+    },
+    "provider": {
+        "description": "The provider type for the libvirt package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "inputProperties": {
+            "uri": {
+                "type": "string",
+                "$ref": "#/types/libvirt:uri:URI",
+                "description": "libvirt connection URI for operations. See https://libvirt.org/uri.html\n",
+                "defaultInfo": {
+                    "environment": [
+                        "LIBVIRT_DEFAULT_URI"
+                    ]
+                }
+            }
+        }
+    },
+    "resources": {
+        "libvirt:index/cloudInitDisk:CloudInitDisk": {
+            "properties": {
+                "metaData": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networkConfig": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                },
+                "userData": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "inputProperties": {
+                "metaData": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networkConfig": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                },
+                "userData": {
+                    "type": "string"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering CloudInitDisk resources.\n",
+                "properties": {
+                    "metaData": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "networkConfig": {
+                        "type": "string"
+                    },
+                    "pool": {
+                        "type": "string"
+                    },
+                    "userData": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "libvirt:index/domain:Domain": {
+            "properties": {
+                "arch": {
+                    "type": "string"
+                },
+                "autostart": {
+                    "type": "boolean"
+                },
+                "bootDevices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainBootDevice:DomainBootDevice"
+                    }
+                },
+                "cloudinit": {
+                    "type": "string"
+                },
+                "cmdlines": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    }
+                },
+                "consoles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainConsole:DomainConsole"
+                    }
+                },
+                "coreosIgnition": {
+                    "type": "string"
+                },
+                "cpu": {
+                    "$ref": "#/types/libvirt:index/DomainCpu:DomainCpu"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainDisk:DomainDisk"
+                    }
+                },
+                "emulator": {
+                    "type": "string"
+                },
+                "filesystems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainFilesystem:DomainFilesystem"
+                    }
+                },
+                "firmware": {
+                    "type": "string"
+                },
+                "fwCfgName": {
+                    "type": "string"
+                },
+                "graphics": {
+                    "$ref": "#/types/libvirt:index/DomainGraphics:DomainGraphics"
+                },
+                "initrd": {
+                    "type": "string"
+                },
+                "kernel": {
+                    "type": "string"
+                },
+                "machine": {
+                    "type": "string"
+                },
+                "memory": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networkInterfaces": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainNetworkInterface:DomainNetworkInterface"
+                    }
+                },
+                "nvram": {
+                    "$ref": "#/types/libvirt:index/DomainNvram:DomainNvram"
+                },
+                "qemuAgent": {
+                    "type": "boolean"
+                },
+                "running": {
+                    "type": "boolean"
+                },
+                "vcpu": {
+                    "type": "integer"
+                },
+                "video": {
+                    "$ref": "#/types/libvirt:index/DomainVideo:DomainVideo"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/DomainXml:DomainXml"
+                }
+            },
+            "required": [
+                "arch",
+                "emulator",
+                "machine",
+                "name"
+            ],
+            "inputProperties": {
+                "arch": {
+                    "type": "string"
+                },
+                "autostart": {
+                    "type": "boolean"
+                },
+                "bootDevices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainBootDevice:DomainBootDevice"
+                    }
+                },
+                "cloudinit": {
+                    "type": "string"
+                },
+                "cmdlines": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    }
+                },
+                "consoles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainConsole:DomainConsole"
+                    }
+                },
+                "coreosIgnition": {
+                    "type": "string"
+                },
+                "cpu": {
+                    "$ref": "#/types/libvirt:index/DomainCpu:DomainCpu"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainDisk:DomainDisk"
+                    }
+                },
+                "emulator": {
+                    "type": "string"
+                },
+                "filesystems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainFilesystem:DomainFilesystem"
+                    }
+                },
+                "firmware": {
+                    "type": "string"
+                },
+                "fwCfgName": {
+                    "type": "string"
+                },
+                "graphics": {
+                    "$ref": "#/types/libvirt:index/DomainGraphics:DomainGraphics"
+                },
+                "initrd": {
+                    "type": "string"
+                },
+                "kernel": {
+                    "type": "string"
+                },
+                "machine": {
+                    "type": "string"
+                },
+                "memory": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "networkInterfaces": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/DomainNetworkInterface:DomainNetworkInterface"
+                    }
+                },
+                "nvram": {
+                    "$ref": "#/types/libvirt:index/DomainNvram:DomainNvram"
+                },
+                "qemuAgent": {
+                    "type": "boolean"
+                },
+                "running": {
+                    "type": "boolean"
+                },
+                "vcpu": {
+                    "type": "integer"
+                },
+                "video": {
+                    "$ref": "#/types/libvirt:index/DomainVideo:DomainVideo"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/DomainXml:DomainXml"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Domain resources.\n",
+                "properties": {
+                    "arch": {
+                        "type": "string"
+                    },
+                    "autostart": {
+                        "type": "boolean"
+                    },
+                    "bootDevices": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/DomainBootDevice:DomainBootDevice"
+                        }
+                    },
+                    "cloudinit": {
+                        "type": "string"
+                    },
+                    "cmdlines": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "pulumi.json#/Any"
+                            }
+                        }
+                    },
+                    "consoles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/DomainConsole:DomainConsole"
+                        }
+                    },
+                    "coreosIgnition": {
+                        "type": "string"
+                    },
+                    "cpu": {
+                        "$ref": "#/types/libvirt:index/DomainCpu:DomainCpu"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "disks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/DomainDisk:DomainDisk"
+                        }
+                    },
+                    "emulator": {
+                        "type": "string"
+                    },
+                    "filesystems": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/DomainFilesystem:DomainFilesystem"
+                        }
+                    },
+                    "firmware": {
+                        "type": "string"
+                    },
+                    "fwCfgName": {
+                        "type": "string"
+                    },
+                    "graphics": {
+                        "$ref": "#/types/libvirt:index/DomainGraphics:DomainGraphics"
+                    },
+                    "initrd": {
+                        "type": "string"
+                    },
+                    "kernel": {
+                        "type": "string"
+                    },
+                    "machine": {
+                        "type": "string"
+                    },
+                    "memory": {
+                        "type": "integer"
+                    },
+                    "metadata": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "networkInterfaces": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/DomainNetworkInterface:DomainNetworkInterface"
+                        }
+                    },
+                    "nvram": {
+                        "$ref": "#/types/libvirt:index/DomainNvram:DomainNvram"
+                    },
+                    "qemuAgent": {
+                        "type": "boolean"
+                    },
+                    "running": {
+                        "type": "boolean"
+                    },
+                    "vcpu": {
+                        "type": "integer"
+                    },
+                    "video": {
+                        "$ref": "#/types/libvirt:index/DomainVideo:DomainVideo"
+                    },
+                    "xml": {
+                        "$ref": "#/types/libvirt:index/DomainXml:DomainXml"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "libvirt:index/ignition:Ignition": {
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "content",
+                "name"
+            ],
+            "inputProperties": {
+                "content": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "content"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Ignition resources.\n",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "pool": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "libvirt:index/network:Network": {
+            "properties": {
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "autostart": {
+                    "type": "boolean"
+                },
+                "bridge": {
+                    "type": "string"
+                },
+                "dhcp": {
+                    "$ref": "#/types/libvirt:index/NetworkDhcp:NetworkDhcp"
+                },
+                "dns": {
+                    "$ref": "#/types/libvirt:index/NetworkDns:NetworkDns"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "mtu": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/NetworkRoute:NetworkRoute"
+                    }
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/NetworkXml:NetworkXml"
+                }
+            },
+            "required": [
+                "bridge",
+                "name"
+            ],
+            "inputProperties": {
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "autostart": {
+                    "type": "boolean"
+                },
+                "bridge": {
+                    "type": "string"
+                },
+                "dhcp": {
+                    "$ref": "#/types/libvirt:index/NetworkDhcp:NetworkDhcp"
+                },
+                "dns": {
+                    "$ref": "#/types/libvirt:index/NetworkDns:NetworkDns"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "mtu": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/libvirt:index/NetworkRoute:NetworkRoute"
+                    }
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/NetworkXml:NetworkXml"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Network resources.\n",
+                "properties": {
+                    "addresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "autostart": {
+                        "type": "boolean"
+                    },
+                    "bridge": {
+                        "type": "string"
+                    },
+                    "dhcp": {
+                        "$ref": "#/types/libvirt:index/NetworkDhcp:NetworkDhcp"
+                    },
+                    "dns": {
+                        "$ref": "#/types/libvirt:index/NetworkDns:NetworkDns"
+                    },
+                    "domain": {
+                        "type": "string"
+                    },
+                    "mode": {
+                        "type": "string"
+                    },
+                    "mtu": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "routes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/libvirt:index/NetworkRoute:NetworkRoute"
+                        }
+                    },
+                    "xml": {
+                        "$ref": "#/types/libvirt:index/NetworkXml:NetworkXml"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "libvirt:index/pool:Pool": {
+            "properties": {
+                "allocation": {
+                    "type": "integer"
+                },
+                "available": {
+                    "type": "string"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/PoolXml:PoolXml"
+                }
+            },
+            "required": [
+                "allocation",
+                "available",
+                "capacity",
+                "name",
+                "type"
+            ],
+            "inputProperties": {
+                "allocation": {
+                    "type": "integer"
+                },
+                "available": {
+                    "type": "string"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/PoolXml:PoolXml"
+                }
+            },
+            "requiredInputs": [
+                "type"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Pool resources.\n",
+                "properties": {
+                    "allocation": {
+                        "type": "integer"
+                    },
+                    "available": {
+                        "type": "string"
+                    },
+                    "capacity": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "xml": {
+                        "$ref": "#/types/libvirt:index/PoolXml:PoolXml"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "libvirt:index/volume:Volume": {
+            "properties": {
+                "baseVolumeId": {
+                    "type": "string"
+                },
+                "baseVolumeName": {
+                    "type": "string"
+                },
+                "baseVolumePool": {
+                    "type": "string"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/VolumeXml:VolumeXml"
+                }
+            },
+            "required": [
+                "format",
+                "name",
+                "size"
+            ],
+            "inputProperties": {
+                "baseVolumeId": {
+                    "type": "string"
+                },
+                "baseVolumeName": {
+                    "type": "string"
+                },
+                "baseVolumePool": {
+                    "type": "string"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pool": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "xml": {
+                    "$ref": "#/types/libvirt:index/VolumeXml:VolumeXml"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Volume resources.\n",
+                "properties": {
+                    "baseVolumeId": {
+                        "type": "string"
+                    },
+                    "baseVolumeName": {
+                        "type": "string"
+                    },
+                    "baseVolumePool": {
+                        "type": "string"
+                    },
+                    "format": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "pool": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "source": {
+                        "type": "string"
+                    },
+                    "xml": {
+                        "$ref": "#/types/libvirt:index/VolumeXml:VolumeXml"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "libvirt:index/getNetworkDNSHostTemplate:getNetworkDNSHostTemplate": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNetworkDNSHostTemplate.\n",
+                "properties": {
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "ip": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "hostname",
+                    "ip"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNetworkDNSHostTemplate.\n",
+                "properties": {
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "rendered": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "hostname",
+                    "ip",
+                    "rendered",
+                    "id"
+                ]
+            }
+        },
+        "libvirt:index/getNetworkDNSSRVTemplate:getNetworkDNSSRVTemplate": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNetworkDNSSRVTemplate.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "port": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "string"
+                    },
+                    "protocol": {
+                        "type": "string"
+                    },
+                    "service": {
+                        "type": "string"
+                    },
+                    "target": {
+                        "type": "string"
+                    },
+                    "weight": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "protocol",
+                    "service"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNetworkDNSSRVTemplate.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "port": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "string"
+                    },
+                    "protocol": {
+                        "type": "string"
+                    },
+                    "rendered": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        }
+                    },
+                    "service": {
+                        "type": "string"
+                    },
+                    "target": {
+                        "type": "string"
+                    },
+                    "weight": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "protocol",
+                    "rendered",
+                    "service",
+                    "id"
+                ]
+            }
+        }
+    },
+    "language": {
+        "csharp": {
+            "namespaces": null,
+            "packageReferences": {
+                "Pulumi": "2.*",
+                "System.Collections.Immutable": "1.6.0"
+            }
+        },
+        "nodejs": {
+            "dependencies": {
+                "@pulumi/pulumi": "^2.0.0"
+            },
+            "devDependencies": {
+                "@types/mime": "^2.0.0",
+                "@types/node": "^8.0.25"
+            },
+            "disableUnionOutputTypes": true,
+            "packageDescription": "A Pulumi provider that lets you provision servers on a libvirt host via pulumi.",
+            "packageName": "",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-libvirt)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-libvirt` repo](https://github.com/pulumi/pulumi-libvirt/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-libvirt` repo](https://github.com/terraform-providers/terraform-provider-libvirt/issues).",
+            "typescriptVersion": ""
+        },
+        "python": {
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-libvirt)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-libvirt` repo](https://github.com/pulumi/pulumi-libvirt/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-libvirt` repo](https://github.com/terraform-providers/terraform-provider-libvirt/issues).",
+            "requires": {
+                "pulumi": "\u003e=2.9.0,\u003c3.0.0"
+            },
+            "usesIOClasses": false
+        }
+    }
+}

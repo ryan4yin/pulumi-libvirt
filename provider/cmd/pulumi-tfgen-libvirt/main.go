@@ -17,8 +17,8 @@ package main
 import (
 	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfgen"
 
-	libvirt "github.com/pulumi/pulumi-libvirt/provider"
-	"github.com/pulumi/pulumi-libvirt/provider/pkg/version"
+	libvirt "github.com/ryan4yin/pulumi-libvirt/provider"
+	"github.com/ryan4yin/pulumi-libvirt/provider/pkg/version"
 )
 
 func main() {

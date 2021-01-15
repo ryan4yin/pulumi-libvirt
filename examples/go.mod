@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-libvirt/examples
+module github.com/ryan4yin/pulumi-libvirt/examples
 
 go 1.15
 
