@@ -9,6 +9,10 @@ A Pulumi provider that lets you provision servers on a libvirt host via pulumi.
 
 Based on [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt)
 
+## Warning
+
+WARNING: This repository are now deprecated since an Official Provider [pulumi/pulumi-libvirt](https://github.com/pulumi/pulumi-libvirt) is available.
+
 ## Installation
 
 1. Resources plugin for Linux are available as tarballs in the [release](https://github.com/ryan4yin/pulumi-libvirt/releases) page.
