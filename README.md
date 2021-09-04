@@ -11,7 +11,9 @@ Based on [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/ter
 
 ## Warning
 
-WARNING: This repository are now deprecated since an Official Provider [pulumi/pulumi-libvirt](https://github.com/pulumi/pulumi-libvirt) is available.
+**WARNING: This repository are now deprecated since an Official Provider [pulumi/pulumi-libvirt](https://github.com/pulumi/pulumi-libvirt) is available.**
+
+but the examples in this README is still usable with the offical provider, as the offical provider is also based on [dmacvicar/terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt).
 
 ## Installation
 
@@ -101,118 +103,206 @@ Create VirtualMachine using Python SDK(writing in other languages ​​is almos
 
 ```python
 from pathlib import Path
+import pulumi
 
 from pulumi_libvirt import *
 
-private_key = Path("ssh-common").read_text()
 
-os_image = Volume(
-    "opensuse-image",
-    name="opensuse-base-qcow2.qcow2",
-    # uri to the volume file, http/file
-    source="/data/os-images/opensuse15.2-OpenStack.x86_64.qcow2",
-)
-
-disk_pool = Pool(
-    "libvirt-test-pool",
-    name="libvirt-test",
-    type="dir",
-    path="/data/kvm-pool"
-)
-
-volume = Volume(
-    "opensuse-vm-test-disk",
-    name="opensuse-vm-test-disk.qcow2",
-    base_volume_id=os_image.id,
-    pool=disk_pool.name,
-    size=30 * 1024 * 1024 * 1024,  # clone from base volume, and resize to 10GB(in bytes)
-)
-
-cloudinit_disk = CloudInitDisk(
-    "cloudinit-test",
-    name="cloudinit-test.iso",
-    user_data=f"""#cloud-config
-hostname: k8s-master-0
+# notice: `#cloud-config` must be the first line without leading `\n`!
+USER_DATA_TEMP = """#cloud-config
+hostname: "{hostname}"
 # let cloudinit ensure that a entry for the fqdn with a distribution dependent ip is present in /etc/hosts
 manage_etc_hosts: localhost
 
-package_upgrade: true
-
-disable_root: false
-
-# set root's password/keys
-user: root
-# set password for console login
-password: xxxxx
-ssh_authorized_keys:
-  - "{private_key}"
+package_upgrade: false
 
 chpasswd:
   # expire password once uesed
   expire: false
-  
-# allow auth by password(not recommended)
-# ssh_pwauth: true
-    """,
-    network_config="""
-version: 2
-ethernets:
-  eth0:
-    dhcp4: false
-    addresses: 
-    - 192.168.122.160/24
-    gateway4: 192.168.122.1
-    nameservers:
-      addresses: [ 114.114.114.114,8.8.8.8 ]
-    """,
-    pool=disk_pool.name,
+
+# allow auth by password(not recommended for prod env)
+ssh_pwauth: true
+
+disable_root: false
+# set root's password/keys
+user: root
+# set password for console login
+password: "{root_passwd}"
+ssh_authorized_keys:
+- "{public_key}"
+
+growpart:
+  mode: auto
+  devices: ['/']
+
+# allow login using root
+runcmd:
+ - sed  -i '/PermitRootLogin/s/.*/PermitRootLogin yes/' /etc/ssh/sshd_config 
+ - systemctl restart sshd
+"""
+
+
+NETWORK_CONFIG_TEMP = """
+version: 1
+config:
+  - type: physical
+    name: eth0
+    subnets:
+      - type: static
+        address: {ip_addr}
+        netmask: 255.255.255.0
+        gateway: 192.168.122.1
+  - type: nameserver
+    interface: eth0
+    address:
+      - 114.114.114.114
+      - 8.8.8.8
+    # search:  # search domain
+    #   - xxx
+"""
+
+LIBVRIT_DISK_POOL = Pool(
+    "k8s-pool",
+    name="k8s",
+    type="dir",
+    path="/data/k8s-pool"
 )
 
 
-vm = Domain(
-    "opensuse-vm-test",
-    name="opensuse-vm-test",
+def new_vm(
+    hostname: str,
+    ip_addr: str,
+    public_key: str,
+    root_passwd: str,
+    template_qcow2_path: str,
+    cpu: int = 2,
+    memory: int = 4096,
+    disk_size: int = 20 * 1024 * 1024 * 1024,
+    ):
 
-    autostart=True,
-    qemu_agent=False,
-    running=False,
+    os_image = Volume(
+        f"{hostname}-image",
+        name=f"{hostname}.qcow2",
+        # uri to the volume file, http/file
+        source=template_qcow2_path,
+    )
 
-    vcpu=2,
-    memory=4096,
-    description="opensuse vm",
+    # clone from base volume, and resize it
+    volume = Volume(
+        f"{hostname}-disk",
+        name=f"{hostname}-disk.qcow2",
+        base_volume_id=os_image.id,
+        pool=LIBVRIT_DISK_POOL.name,
+        size=disk_size,
+    )
 
-    cloudinit=cloudinit_disk.id,
-    disks=[
-        DomainDiskArgs(volume_id=volume.id, scsi=True)
-    ],
+    # generate cloudinit seed iso
+    cloudinit_disk = CloudInitDisk(
+        f"{hostname}-cloudinit-seed",
+        name=f"{hostname}-seed.iso",
+        user_data=USER_DATA_TEMP.format(
+            hostname=hostname,
+            root_passwd=root_passwd,
+            public_key=public_key,
+        ),
+        network_config=NETWORK_CONFIG_TEMP.format(
+            ip_addr=ip_addr,
+        ),
+        pool=LIBVRIT_DISK_POOL.name,
+    )
 
-    network_interfaces=[
-        DomainNetworkInterfaceArgs(
-            network_name="default",
-        )
-    ],
+
+    # create the new vm
+    return Domain(
+        f"{hostname}-vm",
+        name=f"{hostname}-vm",
+
+        autostart=True,
+        qemu_agent=False,
+        running=False,
+
+        vcpu=cpu,
+        memory=memory,
+        description=f"{hostname}-vm",
+
+        cloudinit=cloudinit_disk.id,
+        disks=[
+            DomainDiskArgs(volume_id=volume.id, scsi=True)
+        ],
+
+        # connect to the defaul network
+        network_interfaces=[
+            DomainNetworkInterfaceArgs(
+                network_name="default",
+            )
+        ],
 
 
-    # The optional filesystem block are used to share a directory of the libvirtd host with the guest.
-    # filesystems=[
-    #     # mount this dir inside guest os: `sudo mount -t 9p -o trans=virtio,version=9p2000.L,r share /data/share`
-    #     DomainFilesystemArgs(source="/data/share", target="share", readonly=True)
-    # ]
+        # The optional filesystem block are used to share a directory of the libvirtd host with the guest.
+        # filesystems=[
+        #     # mount this dir inside guest os: `sudo mount -t 9p -o trans=virtio,version=9p2000.L,r share /data/share`
+        #     DomainFilesystemArgs(source="/data/share", target="share", readonly=True)
+        # ]
 
-    # IMPORTANT: this is a known bug on cloud images, since they expect a console
-    # we need to pass it
-    # https://bugs.launchpad.net/cloud-images/+bug/1573095
-    consoles=[
-        DomainConsoleArgs(
-            type="pty",
-            target_type="virtio",
-            target_port="1",
-        )
-    ],
+        # IMPORTANT: this is a known bug on cloud images, since they expect a console
+        # we need to pass it
+        # https://bugs.launchpad.net/cloud-images/+bug/1573095
+        consoles=[
+            DomainConsoleArgs(
+                type="pty",
+                target_type="virtio",
+                target_port="1",
+            )
+        ],
 
-    # graphics=DomainGraphicsArgs(type="vnc", listen_type="address"),
-    graphics=DomainGraphicsArgs(
-        type="spice", listen_type="address", autoport=True),
-)
+        # graphics=DomainGraphicsArgs(type="vnc", listen_type="address"),
+        graphics=DomainGraphicsArgs(
+            type="spice", listen_type="address", autoport=True),
+    )
+
+
+
+def main():
+    public_key = Path("ssh-common.pub").read_text()
+    template_qcow2_path = "/data/base-os/openSUSE-Leap-15.2-OpenStack.x86_64.qcow2"
+    # notice: ubuntu's default network interface is ens3 instead of eth0!
+    # template_qcow2_path = "/data/base-os/ubuntu-21.04-server-cloudimg-amd64-disk-kvm.img"
+    disk_size = 30 * 1024 * 1024 * 1024  # 30G
+    root_passwd = "xxx123"
+
+    k8s_master = new_vm(
+        hostname="k8s-master-0",
+        ip_addr = "192.168.122.160",
+        public_key=public_key,
+        root_passwd=root_passwd,
+        template_qcow2_path=template_qcow2_path,
+        cpu= 2,
+        memory = 4096,
+        disk_size =disk_size,
+    )
+    k8s_node_1 = new_vm(
+        hostname="k8s-worker-0",
+        ip_addr = "192.168.122.170",
+        public_key=public_key,
+        root_passwd=root_passwd,
+        template_qcow2_path=template_qcow2_path,
+        cpu= 4,
+        memory = 8192,
+        disk_size =disk_size,
+    )
+    k8s_node_2 = new_vm(
+        hostname="k8s-worker-1",
+        ip_addr = "192.168.122.171",
+        public_key=public_key,
+        root_passwd=root_passwd,
+        template_qcow2_path=template_qcow2_path,
+        cpu= 4,
+        memory = 8192,
+        disk_size =disk_size,
+    )
+
+
+
+main()
 ```
 
