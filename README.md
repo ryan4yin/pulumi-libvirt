@@ -306,3 +306,18 @@ def main():
 main()
 ```
 
+
+## Some Known Problems related to Cloud Images
+
+- [Ubuntu Cloud Images (RELEASED)](https://cloud-images.ubuntu.com/releases/)
+  - bug: `no such device: root` when boot, but the system can still boot correctly...
+    - it's a but of ubuntu: https://bugs.launchpad.net/cloud-images/+bug/1726476
+  - ubuntu's default network interface is `ens3` instead of `eth0`!
+- [OpenSUSE Cloud Images](https://download.opensuse.org/repositories/Cloud:/Images:/)
+  - bug: only support `network_config` version 1! if you use version 2, some configs such as `gateway4` will be ignored!
+- [Debian Cloud Images](https://cdimage.debian.org/cdimage/cloud/)
+  - bug: stuck on boot, or report kernel panic
+    - do not use spice as graphic card, repleace it with `vnc` and then everything will be ok.
+  - `debian-nocloud` do not run cloudinit on startup
+    - still do not know why...
+
